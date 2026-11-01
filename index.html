@@ -57,26 +57,24 @@ body{margin:0;background:radial-gradient(circle at 80% -10%,#252052 0,transparen
 .mobilebar{display:none;position:fixed;bottom:0;left:0;right:0;background:#0e1224ed;border-top:1px solid var(--line);padding:10px 14px;justify-content:space-around}
 .mobilebar button{background:none;border:0;color:#aab2d0;font-size:11px}
 .mobilebar b{display:block;font-size:18px;color:white}
-.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#252b48;border:1px solid #4a527b;padding:10px 16px;border-radius:999px;display:none}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#252b48;border:1px solid #4a527b;padding:10px 16px;border-radius:999px;display:none;z-index:1200}
 
-/* MORE authentication styling */
+/* Authentication */
 .auth-btn{border:1px solid #514681;background:#211b3b;color:#fff;padding:9px 15px;border-radius:10px;cursor:pointer;font-weight:700}
 .auth-overlay{position:fixed;inset:0;background:#050713df;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
 .auth-box{width:min(420px,100%);background:#111528;border:1px solid #34305f;border-radius:20px;padding:24px;position:relative}
 .auth-box h2{margin:0 0 5px;font-size:25px}
 .auth-box p{color:#9aa3c2;margin:0 0 20px;font-size:13px}
 .auth-box input{width:100%;padding:13px;margin:7px 0;background:#090b18;border:1px solid #303654;border-radius:10px;color:white;outline:none}
+.auth-box input:focus{border-color:#8b5cf6}
 .auth-box button{cursor:pointer}
 .auth-submit{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#7446df,#397fe8);color:white;font-weight:800;margin-top:12px}
 .auth-switch{background:none;border:0;color:#bda8ff;margin-top:15px}
 .auth-close{position:absolute;right:17px;top:12px;background:none;border:0;color:#fff;font-size:23px}
 .auth-message{font-size:12px;color:#c7b9ff;margin-top:12px;min-height:18px}
-.auth-user{font-size:11px;color:#aeb6d3}
-
-@media(max-width:900px){
-.layout{grid-template-columns:165px minmax(0,1fr)}
-.right{display:none}
-}
+.auth-user{font-size:11px;color:#aeb6d3;max-width:150px;overflow-wrap:anywhere}
+.auth-actions{display:flex;align-items:center;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:165px minmax(0,1fr)}.right{display:none}}
 @media(max-width:650px){
 .shell{padding:14px 14px 90px}
 .top{padding-bottom:15px}
@@ -88,35 +86,36 @@ body{margin:0;background:radial-gradient(circle at 80% -10%,#252052 0,transparen
 .visual{height:190px}
 .mobilebar{display:flex}
 .brand{font-size:20px}
+.auth-user{display:none}
 }
 </style>
 </head>
 
 <body>
 <div class="shell">
+
 <header class="top">
 <div class="brand">
 <div class="mark">
 <svg viewBox="0 0 30 30" fill="none">
 <path d="M4 23V7l7 10 4-6 4 6 7-10v16" stroke="url(#g)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-<defs>
-<linearGradient id="g" x1="3" y1="5" x2="27" y2="25">
-<stop stop-color="#A66BFF"/>
-<stop offset=".55" stop-color="#438BFF"/>
-<stop offset="1" stop-color="#EC65C9"/>
-</linearGradient>
-</defs>
+<defs><linearGradient id="g" x1="3" y1="5" x2="27" y2="25"><stop stop-color="#A66BFF"/><stop offset=".55" stop-color="#438BFF"/><stop offset="1" stop-color="#EC65C9"/></linearGradient></defs>
 </svg>
 </div>
 MORE
 </div>
+
 <div class="topright">
 <input class="search" placeholder="Search people, topics, creators…">
-<div class="avatar">O</div>
+<div class="auth-actions">
+<span class="auth-user" id="authUser"></span>
+<button class="auth-btn" id="authButton">Sign in</button>
+</div>
 </div>
 </header>
 
 <div class="layout">
+
 <aside class="side">
 <nav class="nav">
 <button class="active" data-nav="Home">⌂　 Home</button>
@@ -153,10 +152,7 @@ MORE
 <article class="post">
 <div class="posttop">
 <div class="avatar">JD</div>
-<div>
-<div class="user">Jide Daniels</div>
-<div class="handle">@jide.daniels · 2h</div>
-</div>
+<div><div class="user">Jide Daniels</div><div class="handle">@jide.daniels · 2h</div></div>
 <div class="more">•••</div>
 </div>
 <p>Building something meaningful takes patience. Keep showing up, keep learning, and let the work speak. 🚀</p>
@@ -171,10 +167,7 @@ MORE
 <article class="post">
 <div class="posttop">
 <div class="avatar">AM</div>
-<div>
-<div class="user">Amina Yusuf</div>
-<div class="handle">@aminay · 4h</div>
-</div>
+<div><div class="user">Amina Yusuf</div><div class="handle">@aminay · 4h</div></div>
 </div>
 <p>One small win today. Sometimes progress is simply refusing to give up on the plan.</p>
 <div class="actions">
@@ -194,18 +187,11 @@ MORE
 </div>
 <div class="rightcard">
 <h3>People to discover</h3>
-<div class="person">
-<div class="avatar">TK</div>
-<div><b>T.Kay</b><small>@tkaycreates</small></div>
-<button class="follow">Follow</button>
-</div>
-<div class="person">
-<div class="avatar">ZE</div>
-<div><b>Zee Creates</b><small>@zeecreates</small></div>
-<button class="follow">Follow</button>
-</div>
+<div class="person"><div class="avatar">TK</div><div><b>T.Kay</b><small>@tkaycreates</small></div><button class="follow">Follow</button></div>
+<div class="person"><div class="avatar">ZE</div><div><b>Zee Creates</b><small>@zeecreates</small></div><button class="follow">Follow</button></div>
 </div>
 </aside>
+
 </div>
 </div>
 
@@ -219,29 +205,298 @@ MORE
 
 <div class="toast" id="toast"></div>
 
-<script>
-const t=document.getElementById('toast');
-let tm;
-function note(s){
-t.textContent=s;
-t.style.display='block';
-clearTimeout(tm);
-tm=setTimeout(()=>t.style.display='none',1900);
+<!-- Authentication window -->
+<div class="auth-overlay" id="authOverlay">
+<div class="auth-box">
+<button class="auth-close" id="authClose" aria-label="Close">×</button>
+<h2 id="authTitle">Welcome to MORE</h2>
+<p id="authDescription">Sign in or create your account to join MORE.</p>
+
+<form id="authForm">
+<input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
+<input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" minlength="8" required>
+<input id="authConfirm" type="password" placeholder="Confirm password" autocomplete="new-password" minlength="8" style="display:none">
+<button class="auth-submit" id="authSubmit" type="submit">Sign in</button>
+</form>
+
+<button class="auth-switch" id="authSwitch">New to MORE? Create an account</button>
+<button class="auth-switch" id="forgotButton" type="button" style="display:block">Forgot password?</button>
+<div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+/* MORE Supabase connection */
+const SUPABASE_URL = 'https://sixhenbrngngqiuqvqqk.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Mj8Z_1b5ODa2mo7pWWCKdA_FZFHPcrf';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const toast = document.getElementById('toast');
+const authOverlay = document.getElementById('authOverlay');
+const authForm = document.getElementById('authForm');
+const authTitle = document.getElementById('authTitle');
+const authDescription = document.getElementById('authDescription');
+const authEmail = document.getElementById('authEmail');
+const authPassword = document.getElementById('authPassword');
+const authConfirm = document.getElementById('authConfirm');
+const authSubmit = document.getElementById('authSubmit');
+const authSwitch = document.getElementById('authSwitch');
+const forgotButton = document.getElementById('forgotButton');
+const authMessage = document.getElementById('authMessage');
+const authButton = document.getElementById('authButton');
+const authUser = document.getElementById('authUser');
+
+let currentMode = 'login';
+let currentSession = null;
+let toastTimer;
+
+function note(message) {
+  toast.textContent = message;
+  toast.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 2500);
 }
 
-document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{
-document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.nav===b.dataset.nav));
-note(b.dataset.nav==='Home'?'You’re on Home':b.dataset.nav+' is coming in the next build');
+function showMessage(message) {
+  authMessage.textContent = message;
+}
+
+function openAuth(mode = 'login') {
+  authOverlay.style.display = 'flex';
+  setMode(mode);
+}
+
+function closeAuth() {
+  authOverlay.style.display = 'none';
+  showMessage('');
+  authForm.reset();
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  showMessage('');
+
+  const isSignup = mode === 'signup';
+  const isReset = mode === 'reset';
+  const isForgot = mode === 'forgot';
+
+  authTitle.textContent =
+    isSignup ? 'Create your MORE account' :
+    isForgot ? 'Reset your password' :
+    isReset ? 'Choose a new password' :
+    'Welcome back';
+
+  authDescription.textContent =
+    isSignup ? 'Join MORE. Your world, make it more.' :
+    isForgot ? 'Enter your email and we will send you a reset link.' :
+    isReset ? 'Choose a new password for your account.' :
+    'Sign in to continue to MORE.';
+
+  authEmail.style.display = isReset ? 'none' : 'block';
+  authEmail.required = !isReset;
+
+  authPassword.style.display = isForgot ? 'none' : 'block';
+  authPassword.required = !isForgot;
+  authPassword.placeholder = isReset ? 'New password' : 'Password';
+
+  authConfirm.style.display = (isSignup || isReset) ? 'block' : 'none';
+  authConfirm.required = isSignup || isReset;
+
+  authSubmit.textContent =
+    isSignup ? 'Create account' :
+    isForgot ? 'Send reset link' :
+    isReset ? 'Save new password' :
+    'Sign in';
+
+  authSwitch.style.display = (isForgot || isReset) ? 'none' : 'inline-block';
+  authSwitch.textContent = isSignup
+    ? 'Already have an account? Sign in'
+    : 'New to MORE? Create an account';
+
+  forgotButton.style.display = mode === 'login' ? 'block' : 'none';
+}
+
+function updateAccountDisplay(session) {
+  currentSession = session;
+
+  if (session?.user) {
+    authButton.textContent = 'Log out';
+    authUser.textContent = session.user.email || 'Signed in';
+  } else {
+    authButton.textContent = 'Sign in';
+    authUser.textContent = '';
+  }
+}
+
+/* Open or close account window */
+authButton.addEventListener('click', async () => {
+  if (currentSession) {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      note(error.message);
+      return;
+    }
+
+    updateAccountDisplay(null);
+    note('You have signed out.');
+  } else {
+    openAuth('login');
+  }
 });
 
-document.querySelectorAll('.like').forEach(b=>b.onclick=()=>{
-let s=b.querySelector('span'),n=+s.textContent,liked=b.classList.toggle('liked');
-s.textContent=liked?n+1:n-1;
-b.firstChild.textContent=liked?'♥ ':'♡ ';
+document.getElementById('authClose').addEventListener('click', closeAuth);
+
+authOverlay.addEventListener('click', event => {
+  if (event.target === authOverlay) closeAuth();
 });
 
-document.querySelectorAll('.comment,.share,.follow').forEach(b=>b.onclick=()=>{
-note(b.classList.contains('follow')?'Following preview — account features are coming soon':b.classList.contains('share')?'Sharing will be enabled in a future build':'Comments will be enabled in a future build');
+authSwitch.addEventListener('click', () => {
+  setMode(currentMode === 'signup' ? 'login' : 'signup');
+});
+
+forgotButton.addEventListener('click', () => setMode('forgot'));
+
+/* Account form */
+authForm.addEventListener('submit', async event => {
+  event.preventDefault();
+
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+  const confirmation = authConfirm.value;
+
+  authSubmit.disabled = true;
+  authSubmit.textContent = 'Please wait…';
+  showMessage('');
+
+  try {
+    if (currentMode === 'signup') {
+      if (password !== confirmation) {
+        throw new Error('Your passwords do not match.');
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.session) {
+        closeAuth();
+        note('Your MORE account has been created!');
+      } else {
+        showMessage('Account created. Check your email for the verification link before signing in.');
+      }
+    }
+
+    else if (currentMode === 'login') {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      updateAccountDisplay(data.session);
+      closeAuth();
+      note('Welcome back to MORE!');
+    }
+
+    else if (currentMode === 'forgot') {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin
+      });
+
+      if (error) throw error;
+
+      showMessage('If an account exists for this email, a password reset link will be sent.');
+    }
+
+    else if (currentMode === 'reset') {
+      if (password !== confirmation) {
+        throw new Error('Your passwords do not match.');
+      }
+
+      const { error } = await supabase.auth.updateUser({
+        password
+      });
+
+      if (error) throw error;
+
+      closeAuth();
+      note('Password updated successfully. You can now sign in.');
+      setMode('login');
+    }
+  } catch (error) {
+    showMessage(error.message || 'Something went wrong. Please try again.');
+  } finally {
+    authSubmit.disabled = false;
+    authSubmit.textContent =
+      currentMode === 'signup' ? 'Create account' :
+      currentMode === 'forgot' ? 'Send reset link' :
+      currentMode === 'reset' ? 'Save new password' :
+      'Sign in';
+  }
+});
+
+/* Keep the account display updated */
+supabase.auth.onAuthStateChange((event, session) => {
+  updateAccountDisplay(session);
+
+  if (event === 'PASSWORD_RECOVERY') {
+    openAuth('reset');
+    showMessage('Enter and confirm your new password.');
+  }
+});
+
+/* Restore an existing login session */
+const { data: sessionData } = await supabase.auth.getSession();
+updateAccountDisplay(sessionData.session);
+
+/* Existing MORE navigation */
+document.querySelectorAll('[data-nav]').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.nav button').forEach(item => {
+      item.classList.toggle('active', item.dataset.nav === button.dataset.nav);
+    });
+
+    note(button.dataset.nav === 'Home'
+      ? 'You’re on Home'
+      : button.dataset.nav + ' is coming in the next build');
+  });
+});
+
+/* Demo interactions — these are not yet saved to a database */
+document.querySelectorAll('.like').forEach(button => {
+  button.addEventListener('click', () => {
+    const count = button.querySelector('span');
+    const number = Number(count.textContent);
+    const liked = button.classList.toggle('liked');
+
+    count.textContent = liked ? number + 1 : number - 1;
+    button.firstChild.textContent = liked ? '♥ ' : '♡ ';
+  });
+});
+
+document.querySelectorAll('.comment,.share,.follow').forEach(button => {
+  button.addEventListener('click', () => {
+    note(
+      button.classList.contains('follow')
+        ? 'Following will be available in a future build.'
+        : button.classList.contains('share')
+        ? 'Sharing will be enabled in a future build.'
+        : 'Comments will be enabled in a future build.'
+    );
+  });
 });
 </script>
 </body>
