@@ -1,287 +1,18 @@
 
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b18">
-<title>MORE — More Than Social</title>
-
-<style>
-:root{--bg:#090b18;--panel:#111528;--line:#252b48;--muted:#9aa3c2;--text:#f6f7ff;--purple:#8b5cf6;--blue:#438bff;--pink:#ec65c9}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 80% -10%,#252052 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-button,input{font:inherit}
-#appShell{display:none}
-.shell{max-width:1180px;margin:auto;min-height:100vh;padding:22px 26px 90px}
-.top{display:flex;align-items:center;justify-content:space-between;padding:8px 0 24px;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:23px;letter-spacing:1.8px}
-.mark{width:38px;height:38px;border-radius:12px;background:#151a31;border:1px solid #34385f;display:grid;place-items:center}
-.mark svg{width:25px}
-.search{width:min(320px,35vw);background:#111528;border:1px solid var(--line);border-radius:999px;padding:11px 16px;color:white}
-.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue),var(--pink));display:grid;place-items:center;font-weight:800}
-.topright{display:flex;align-items:center;gap:12px}
-.profile-trigger{border:0;background:transparent;color:white;cursor:pointer;display:flex;align-items:center;gap:9px}
-.layout{display:grid;grid-template-columns:190px minmax(0,1fr) 240px;gap:25px;padding-top:26px}
-.nav{display:grid;gap:8px}
-.nav button{border:0;background:transparent;color:#aeb6d3;text-align:left;padding:12px 14px;border-radius:13px;font-weight:650;cursor:pointer}
-.nav button.active,.nav button:hover{background:#1a1e39;color:white}
-.nav .create{background:linear-gradient(100deg,#7446df,#397fe8);color:white;text-align:center;margin-top:8px}
-.tagline{margin-top:34px;color:#737d9e;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
-.hero{padding:27px 28px;border:1px solid #34305f;border-radius:22px;background:linear-gradient(115deg,#7048d238,#3270dd24 55%,#e252b820);margin-bottom:22px}
-.eyebrow{font-size:11px;letter-spacing:2px;color:#c1b4ff;font-weight:800}
-.hero h1{font-size:clamp(28px,4vw,43px);line-height:1.08;margin:10px 0 8px;letter-spacing:-1.5px}
-.hero p{color:#c0c6df;margin:0;max-width:510px}
-.stories{display:flex;gap:15px;overflow:auto;padding:4px 0 20px}
-.story{flex:0 0 68px;text-align:center;color:#aeb6d3;font-size:11px}
-.ring{width:58px;height:58px;border-radius:50%;padding:3px;margin:auto auto 6px;background:linear-gradient(135deg,var(--purple),var(--blue),var(--pink))}
-.ring span{height:100%;display:grid;place-items:center;border-radius:50%;background:#202541;border:2px solid var(--bg);font-weight:800;color:white}
-.feedhead{display:flex;justify-content:space-between;margin:3px 0 13px}
-.feedhead h2{font-size:17px;margin:0}
-.feedhead span{color:var(--muted);font-size:12px}
-.post,.rightcard{background:rgba(17,21,40,.96);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:15px}
-.posttop{display:flex;align-items:center;gap:10px}
-.user{font-weight:750}
-.handle,small{color:#8992b0;font-size:12px}
-.more{margin-left:auto;color:#9aa3c2}
-.post p{color:#d8dcf0;margin:15px 0}
-.visual{height:220px;border-radius:14px;background:linear-gradient(135deg,#24214c,#202d59 55%,#522c63);display:grid;place-items:center}
-.visual strong{font-size:36px;letter-spacing:5px}
-.actions{display:flex;gap:22px;color:#aab2d0;padding-top:13px;font-size:13px}
-.actions button{border:0;background:none;color:inherit;padding:0;cursor:pointer}
-.actions button.liked{color:#f47bbd}
-.rightcard h3{font-size:14px;margin:0 0 14px}
-.trend{padding:9px 0;border-top:1px solid var(--line)}
-.trend small{display:block}
-.trend b{font-size:13px}
-.person{display:flex;align-items:center;gap:9px;margin:12px 0}
-.person .avatar{width:31px;height:31px;font-size:11px}
-.person button{margin-left:auto;border:1px solid #45406f;color:#c7b9ff;background:transparent;border-radius:99px;padding:5px 10px;font-size:11px;cursor:pointer}
-.mobilebar{display:none;position:fixed;bottom:0;left:0;right:0;background:#0e1224ed;border-top:1px solid var(--line);padding:10px 14px;justify-content:space-around;z-index:10}
-.mobilebar button{background:none;border:0;color:#aab2d0;font-size:11px;cursor:pointer}
-.mobilebar b{display:block;font-size:18px;color:white}
-.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#252b48;border:1px solid #4a527b;padding:10px 16px;border-radius:999px;display:none;z-index:1200;max-width:90%;text-align:center}
-
-/* Welcome and authentication */
-.welcome-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.welcome-card{width:min(430px,100%);background:rgba(17,21,40,.97);border:1px solid #34305f;border-radius:25px;padding:30px 26px;box-shadow:0 25px 90px #0008}
-.welcome-brand{text-align:center;margin-bottom:27px}
-.welcome-mark{width:65px;height:65px;border-radius:19px;background:#151a31;border:1px solid #45406f;display:grid;place-items:center;margin:0 auto 12px}
-.welcome-mark svg{width:42px}
-.welcome-brand h1{font-size:31px;letter-spacing:4px;margin:0;font-weight:900}
-.welcome-brand p{color:#bda8ff;margin:3px 0 0;font-size:13px;letter-spacing:.5px}
-.welcome-tagline{font-size:12px;color:#8992b0;margin-top:12px}
-.auth-box h2{margin:0 0 5px;font-size:24px}
-.auth-box>p{color:#9aa3c2;margin:0 0 18px;font-size:13px}
-.auth-box input{width:100%;padding:13px;margin:7px 0;background:#090b18;border:1px solid #303654;border-radius:10px;color:white;outline:none}
-.auth-box input:focus{border-color:#8b5cf6}
-.auth-box input::placeholder{color:#77809e}
-.auth-box button{cursor:pointer}
-.auth-submit{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(100deg,#7446df,#397fe8);color:white;font-weight:800;margin-top:12px}
-.auth-submit:disabled{opacity:.6;cursor:wait}
-.auth-switch{display:block;width:100%;background:none;border:0;color:#bda8ff;margin-top:15px}
-.auth-secondary{display:block;width:100%;background:none;border:0;color:#8992b0;margin-top:12px;font-size:12px}
-.auth-message{font-size:12px;color:#c7b9ff;margin-top:13px;min-height:18px;overflow-wrap:anywhere}
-.auth-message.error{color:#ff9aab}
-.auth-message.success{color:#9be6c0}
-.otp-input{letter-spacing:9px;text-align:center;font-size:24px;font-weight:800}
-.welcome-footer{text-align:center;color:#697391;font-size:11px;margin-top:23px}
-
-/* Profile panel */
-.profile-overlay{position:fixed;inset:0;background:#050713df;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
-.profile-box{width:min(400px,100%);background:#111528;border:1px solid #34305f;border-radius:20px;padding:25px;position:relative}
-.profile-box h2{margin:0 0 5px}
-.profile-box p{color:#9aa3c2;font-size:13px;overflow-wrap:anywhere}
-.profile-close{position:absolute;right:16px;top:12px;background:none;border:0;color:white;font-size:24px}
-.logout-button{width:100%;padding:12px;border:1px solid #85465c;background:#321c2c;color:#ffb5c4;border-radius:10px;font-weight:700;margin-top:15px}
-.profile-avatar{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue),var(--pink));display:grid;place-items:center;font-size:22px;font-weight:800;margin-bottom:14px}
-
-@media(max-width:900px){.layout{grid-template-columns:165px minmax(0,1fr)}.right{display:none}}
-@media(max-width:650px){
-.shell{padding:14px 14px 90px}
-.top{padding-bottom:15px}
-.search{display:none}
-.layout{display:block;padding-top:16px}
-.side{display:none}
-.hero{padding:22px}
-.hero h1{font-size:32px}
-.visual{height:190px}
-.mobilebar{display:flex}
-.brand{font-size:20px}
-.welcome-card{padding:26px 21px}
-}
-</style>
-</head>
-
-<body>
-
-<!-- This screen is shown before someone signs in -->
-<section class="welcome-screen" id="welcomeScreen">
-  <div class="welcome-card">
-    <div class="welcome-brand">
-      <div class="welcome-mark">
-        <svg viewBox="0 0 30 30" fill="none">
-          <path d="M4 23V7l7 10 4-6 4 6 7-10v16" stroke="url(#welcomeGradient)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <defs><linearGradient id="welcomeGradient" x1="3" y1="5" x2="27" y2="25"><stop stop-color="#A66BFF"/><stop offset=".55" stop-color="#438BFF"/><stop offset="1" stop-color="#EC65C9"/></linearGradient></defs>
-        </svg>
-      </div>
-      <h1>MORE</h1>
-      <p>More Than Social.</p>
-      <div class="welcome-tagline">YOUR WORLD, MAKE IT MORE.</div>
-    </div>
-
-    <div class="auth-box">
-      <h2 id="authTitle">Welcome to MORE</h2>
-      <p id="authDescription">Sign in to continue or create an account to join the community.</p>
-
-      <form id="authForm">
-        <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
-        <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" minlength="8" required>
-        <input id="authConfirm" type="password" placeholder="Confirm password" autocomplete="new-password" minlength="8" style="display:none">
-        <input id="authCode" class="otp-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit code" style="display:none">
-        <button class="auth-submit" id="authSubmit" type="submit">Sign in</button>
-      </form>
-
-      <button class="auth-switch" id="authSwitch" type="button">New to MORE? Create an account</button>
-      <button class="auth-secondary" id="forgotButton" type="button">Forgot password?</button>
-      <button class="auth-secondary" id="resendButton" type="button" style="display:none">Resend verification code</button>
-      <div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
-    </div>
-    <div class="welcome-footer">A place for people, ideas and moments.</div>
-  </div>
-</section>
-
-<!-- The actual social platform remains hidden until authentication succeeds -->
-<div id="appShell">
-  <div class="shell">
-    <header class="top">
-      <div class="brand">
-        <div class="mark">
-          <svg viewBox="0 0 30 30" fill="none">
-            <path d="M4 23V7l7 10 4-6 4 6 7-10v16" stroke="url(#g)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs><linearGradient id="g" x1="3" y1="5" x2="27" y2="25"><stop stop-color="#A66BFF"/><stop offset=".55" stop-color="#438BFF"/><stop offset="1" stop-color="#EC65C9"/></linearGradient></defs>
-          </svg>
-        </div>
-        MORE
-      </div>
-
-      <div class="topright">
-        <input class="search" placeholder="Search people, topics, creators…">
-        <button class="profile-trigger" id="profileButton" aria-label="Open profile">
-          <div class="avatar" id="topAvatar">M</div>
-        </button>
-      </div>
-    </header>
-
-    <div class="layout">
-      <aside class="side">
-        <nav class="nav">
-          <button class="active" data-nav="Home">⌂　 Home</button>
-          <button data-nav="Explore">⌕　 Explore</button>
-          <button data-nav="Create">＋　 Create</button>
-          <button data-nav="Inbox">✉　 Inbox</button>
-          <button data-nav="Profile" id="desktopProfile">◉　 Profile</button>
-          <button class="create" data-nav="Create">＋ Create post</button>
-        </nav>
-        <div class="tagline">More than social.</div>
-      </aside>
-
-      <main>
-        <section class="hero">
-          <div class="eyebrow">WELCOME TO MORE</div>
-          <h1>YOUR WORLD,<br>MAKE IT MORE.</h1>
-          <p>Discover people, ideas and moments worth sharing. Your next connection starts here.</p>
-        </section>
-
-        <section class="stories">
-          <div class="story"><div class="ring"><span>＋</span></div>Your story</div>
-          <div class="story"><div class="ring"><span>JD</span></div>jide.d</div>
-          <div class="story"><div class="ring"><span>AM</span></div>amina</div>
-          <div class="story"><div class="ring"><span>TK</span></div>t.kay</div>
-          <div class="story"><div class="ring"><span>ZE</span></div>zeecreates</div>
-          <div class="story"><div class="ring"><span>MO</span></div>morenike</div>
-        </section>
-
-        <div class="feedhead">
-          <h2>For you</h2>
-          <span>Fresh perspectives, every day</span>
-        </div>
-
-        <article class="post">
-          <div class="posttop">
-            <div class="avatar">JD</div>
-            <div><div class="user">Jide Daniels</div><div class="handle">@jide.daniels · 2h</div></div>
-            <div class="more">•••</div>
-          </div>
-          <p>Building something meaningful takes patience. Keep showing up, keep learning, and let the work speak. 🚀</p>
-          <div class="visual"><strong>KEEP<br>BUILDING.</strong></div>
-          <div class="actions">
-            <button class="like">♡ <span>128</span></button>
-            <button class="comment">◯ 24</button>
-            <button class="share">↗ Share</button>
-          </div>
-        </article>
-
-        <article class="post">
-          <div class="posttop">
-            <div class="avatar">AM</div>
-            <div><div class="user">Amina Yusuf</div><div class="handle">@aminay · 4h</div></div>
-          </div>
-          <p>One small win today. Sometimes progress is simply refusing to give up on the plan.</p>
-          <div class="actions">
-            <button class="like">♡ <span>86</span></button>
-            <button class="comment">◯ 11</button>
-            <button class="share">↗ Share</button>
-          </div>
-        </article>
-      </main>
-
-      <aside class="right">
-        <div class="rightcard">
-          <h3>What's happening</h3>
-          <div class="trend"><small>Trending in MORE</small><b>#CreatorEconomy</b><small>2.4k posts</small></div>
-          <div class="trend"><small>Technology · Trending</small><b>#BuildInPublic</b><small>1.8k posts</small></div>
-          <div class="trend"><small>Community · Popular</small><b>#NaijaCreators</b><small>940 posts</small></div>
-        </div>
-        <div class="rightcard">
-          <h3>People to discover</h3>
-          <div class="person"><div class="avatar">TK</div><div><b>T.Kay</b><small>@tkaycreates</small></div><button class="follow">Follow</button></div>
-          <div class="person"><div class="avatar">ZE</div><div><b>Zee Creates</b><small>@zeecreates</small></div><button class="follow">Follow</button></div>
-        </div>
-      </aside>
-    </div>
-  </div>
-
-  <nav class="mobilebar">
-    <button data-nav="Home"><b>⌂</b>Home</button>
-    <button data-nav="Explore"><b>⌕</b>Explore</button>
-    <button data-nav="Create"><b>＋</b>Create</button>
-    <button data-nav="Inbox"><b>✉</b>Inbox</button>
-    <button data-nav="Profile"><b>◉</b>Profile</button>
-  </nav>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- Profile and logout -->
-<div class="profile-overlay" id="profileOverlay">
-  <div class="profile-box">
-    <button class="profile-close" id="profileClose" aria-label="Close">×</button>
-    <div class="profile-avatar" id="profileAvatar">M</div>
-    <h2>Your profile</h2>
-    <p id="profileEmail"></p>
-    <p>Account settings and profile features will grow as MORE develops.</p>
-    <button class="logout-button" id="logoutButton">Log out</button>
-  </div>
-</div>
-
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const SUPABASE_URL = 'https://sixhenbrngngqiuqvqqk.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Mj8Z_1b5ODa2mo7pWWCKdA_FZFHPcrf';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce'
+  }
+});
 
 const welcomeScreen = document.getElementById('welcomeScreen');
 const appShell = document.getElementById('appShell');
@@ -301,7 +32,6 @@ const profileOverlay = document.getElementById('profileOverlay');
 
 let currentMode = 'login';
 let currentSession = null;
-let pendingEmail = '';
 let toastTimer;
 
 function note(message) {
@@ -318,11 +48,13 @@ function showMessage(message, type = '') {
 }
 
 function showApp(session) {
+  if (!session?.user) return;
+
   currentSession = session;
   welcomeScreen.style.display = 'none';
   appShell.style.display = 'block';
 
-  const email = session?.user?.email || '';
+  const email = session.user.email || '';
   const initial = email ? email.charAt(0).toUpperCase() : 'M';
 
   document.getElementById('topAvatar').textContent = initial;
@@ -343,61 +75,52 @@ function setMode(mode) {
   showMessage('');
 
   const signup = mode === 'signup';
-  const verify = mode === 'verify';
   const forgot = mode === 'forgot';
   const reset = mode === 'reset';
 
   authTitle.textContent =
     signup ? 'Create your MORE account' :
-    verify ? 'Verify your email' :
     forgot ? 'Reset your password' :
     reset ? 'Choose a new password' :
     'Welcome back';
 
   authDescription.textContent =
     signup ? 'Join MORE. Your world, make it more.' :
-    verify ? 'Enter the six-digit code we sent to ' + pendingEmail :
     forgot ? 'Enter your email address to receive a password reset link.' :
     reset ? 'Choose and confirm your new password.' :
     'Sign in to continue to MORE.';
 
-  authEmail.style.display = (verify || reset) ? 'none' : 'block';
-  authEmail.required = !(verify || reset);
+  authEmail.style.display = reset ? 'none' : 'block';
+  authEmail.required = !reset;
 
-  authPassword.style.display = (forgot || verify) ? 'none' : 'block';
-  authPassword.required = !(forgot || verify);
+  authPassword.style.display = forgot ? 'none' : 'block';
+  authPassword.required = !forgot;
   authPassword.placeholder = reset ? 'New password' : 'Password';
 
   authConfirm.style.display = (signup || reset) ? 'block' : 'none';
   authConfirm.required = signup || reset;
 
-  authCode.style.display = verify ? 'block' : 'none';
-  authCode.required = verify;
+  // Email confirmation now uses Supabase's link, not a code.
+  authCode.style.display = 'none';
+  authCode.required = false;
+  resendButton.style.display = 'none';
 
   authSubmit.textContent =
     signup ? 'Create account' :
-    verify ? 'Verify code' :
     forgot ? 'Send reset link' :
     reset ? 'Save new password' :
     'Sign in';
 
-  authSwitch.style.display = (verify || forgot || reset) ? 'none' : 'block';
+  authSwitch.style.display = (forgot || reset) ? 'none' : 'block';
   authSwitch.textContent = signup
     ? 'Already have an account? Sign in'
     : 'New to MORE? Create an account';
 
   forgotButton.style.display = mode === 'login' ? 'block' : 'none';
-  resendButton.style.display = verify ? 'block' : 'none';
-
-  if (verify) {
-    authCode.value = '';
-    setTimeout(() => authCode.focus(), 100);
-  }
 }
 
 function openProfile() {
-  if (!currentSession) return;
-  profileOverlay.style.display = 'flex';
+  if (currentSession) profileOverlay.style.display = 'flex';
 }
 
 authSwitch.addEventListener('click', () => {
@@ -408,6 +131,7 @@ forgotButton.addEventListener('click', () => setMode('forgot'));
 
 document.getElementById('profileButton').addEventListener('click', openProfile);
 document.getElementById('desktopProfile').addEventListener('click', openProfile);
+
 document.getElementById('profileClose').addEventListener('click', () => {
   profileOverlay.style.display = 'none';
 });
@@ -416,7 +140,7 @@ profileOverlay.addEventListener('click', event => {
   if (event.target === profileOverlay) profileOverlay.style.display = 'none';
 });
 
-/* Sign out from the Profile area */
+/* Sign out */
 document.getElementById('logoutButton').addEventListener('click', async () => {
   const button = document.getElementById('logoutButton');
   button.disabled = true;
@@ -436,7 +160,7 @@ document.getElementById('logoutButton').addEventListener('click', async () => {
   note('You have signed out of MORE.');
 });
 
-/* Create account, verify code, sign in and password recovery */
+/* Signup, login and password recovery */
 authForm.addEventListener('submit', async event => {
   event.preventDefault();
 
@@ -454,11 +178,12 @@ authForm.addEventListener('submit', async event => {
         throw new Error('Your passwords do not match.');
       }
 
-      pendingEmail = email;
-
       const { data, error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options: {
+          emailRedirectTo: window.location.origin
+        }
       });
 
       if (error) throw error;
@@ -467,28 +192,13 @@ authForm.addEventListener('submit', async event => {
         showApp(data.session);
         note('Your MORE account has been created!');
       } else {
-        setMode('verify');
-        showMessage('Your account has been created. Enter the code sent to your email.', 'success');
+        setMode('login');
+        authEmail.value = email;
+        showMessage(
+          'Account created! Check your email and click the confirmation link to activate your account. Then return to MORE and sign in.',
+          'success'
+        );
       }
-    }
-
-    else if (currentMode === 'verify') {
-      const token = authCode.value.trim();
-
-      if (!/^[0-9]{6}$/.test(token)) {
-        throw new Error('Enter the six-digit code from your email.');
-      }
-
-      const { data, error } = await supabase.auth.verifyOtp({
-        email: pendingEmail,
-        token,
-        type: 'signup'
-      });
-
-      if (error) throw error;
-
-      showApp(data.session);
-      note('Email verified. Welcome to MORE!');
     }
 
     else if (currentMode === 'login') {
@@ -510,7 +220,10 @@ authForm.addEventListener('submit', async event => {
 
       if (error) throw error;
 
-      showMessage('If an account exists for this email, a password reset link will be sent.', 'success');
+      showMessage(
+        'If an account exists for this email, a password reset link will be sent.',
+        'success'
+      );
     }
 
     else if (currentMode === 'reset') {
@@ -531,58 +244,51 @@ authForm.addEventListener('submit', async event => {
     authSubmit.disabled = false;
     authSubmit.textContent =
       currentMode === 'signup' ? 'Create account' :
-      currentMode === 'verify' ? 'Verify code' :
       currentMode === 'forgot' ? 'Send reset link' :
       currentMode === 'reset' ? 'Save new password' :
       'Sign in';
   }
 });
 
-/* Resend the signup verification code */
-resendButton.addEventListener('click', async () => {
-  if (!pendingEmail) return;
-
-  resendButton.disabled = true;
-  resendButton.textContent = 'Sending…';
-
-  const { error } = await supabase.auth.resend({
-    type: 'signup',
-    email: pendingEmail
-  });
-
-  resendButton.disabled = false;
-  resendButton.textContent = 'Resend verification code';
-
-  if (error) {
-    showMessage(error.message, 'error');
-  } else {
-    showMessage('A new verification code has been requested. Check your email.', 'success');
-  }
-});
-
-/* Keep the app locked unless there is a valid session */
+/* Handle email confirmation links and restored sessions */
 supabase.auth.onAuthStateChange((event, session) => {
-  if (session?.user) {
-    showApp(session);
-  } else {
-    showWelcome();
-  }
-
   if (event === 'PASSWORD_RECOVERY') {
+    currentSession = session;
     welcomeScreen.style.display = 'flex';
     appShell.style.display = 'none';
     setMode('reset');
     showMessage('Enter and confirm your new password.');
+    return;
+  }
+
+  if (session?.user) {
+    showApp(session);
+
+    if (event === 'SIGNED_IN') {
+      note('Welcome to MORE!');
+    }
+  } else if (event === 'SIGNED_OUT') {
+    showWelcome();
   }
 });
 
-/* Restore a valid existing session */
-const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+/* Restore a session or process the confirmation-link callback */
+try {
+  const { data, error } = await supabase.auth.getSession();
 
-if (!sessionError && sessionData.session?.user) {
-  showApp(sessionData.session);
-} else {
+  if (error) throw error;
+
+  if (data.session?.user) {
+    showApp(data.session);
+  } else {
+    showWelcome();
+  }
+} catch (error) {
   showWelcome();
+  showMessage(
+    'We could not restore your session. Please sign in again.',
+    'error'
+  );
 }
 
 /* MORE navigation */
@@ -604,7 +310,7 @@ document.querySelectorAll('[data-nav]').forEach(button => {
   });
 });
 
-/* Demo interactions — these are not yet saved to a database */
+/* Demo interactions — not yet saved to a database */
 document.querySelectorAll('.like').forEach(button => {
   button.addEventListener('click', () => {
     const count = button.querySelector('span');
@@ -628,5 +334,3 @@ document.querySelectorAll('.comment,.share,.follow').forEach(button => {
   });
 });
 </script>
-</body>
-</html>
